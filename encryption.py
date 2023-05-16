@@ -8,7 +8,7 @@ from cryptography.hazmat.primitives import serialization
 
 import os
 import logging
-
+logging.basicConfig(level="DEBUG")
 def encryption_info(way_text, private_key_path, encrypted_symmetric_way, way_recorded_encrypted_text):
     try:
         with open(private_key_path, "rb") as f:
