@@ -1,0 +1,10 @@
+{
+    "src_text_file": "./decry/text.txt",
+    "encrypted_file": "./encry/encrypted_text.txt",
+    "decrypted_file": "./decry/decrypted_text.txt",
+    "symmetric_key": "./encry/symmetric_key.txt",
+    "symmetric_key_decrypted": "./decry/symmetric_key_decrypted.txt",
+    "public_key": "./encry/public.pem",
+    "private_key": "./encry/private.pem",
+    "size": 128
+} 
