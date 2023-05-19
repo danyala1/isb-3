@@ -10,6 +10,7 @@ from cryptography.hazmat.backends import default_backend
 class Symmetric:
     """Класс Symmetric для генирации симметричного ключа шифрования
     """
+
     def __init__(self, size: int, symmetric_key_file: str, decrypt_file: str = None, encrypt_file: str = None) -> None:
         """_summary_
 

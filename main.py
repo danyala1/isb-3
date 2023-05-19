@@ -5,14 +5,16 @@ import os
 
 from encryption import encrypt_data
 from keys_generate import keys_generator
-from decrypt import  decrypt_data
+from decrypt import decrypt_data
+
 
 def get_argument():
     """Получение аргументов
     Returns:
         args: считанные аргументы
     """
-    parser = argparse.ArgumentParser(description="Гибридное шифрование с использованием асимметричного и симметричного ключа")
+    parser = argparse.ArgumentParser(
+        description="Гибридное шифрование с использованием асимметричного и симметричного ключа")
     mode_group = parser.add_mutually_exclusive_group(required=True)
     mode_group.add_argument(
         '-gen', '--generation', action='store_true', help='Сгенерировать ключи')
@@ -52,7 +54,7 @@ if __name__ == "__main__":
     mode = (args.generation, args.encryption, args.decryption)
     settings = set_config_file("settings.json")
     size = int(settings["size"])
-    flag=False
+    flag = False
     if size == 128 or size == 192 or size == 256:
         size = int(size/8)
         flag = True
@@ -63,16 +65,16 @@ if __name__ == "__main__":
     else:
         logging.info(f'Размер ключа: {size * 8}')
 
-    if(mode == (True, False, False)):
-        keys_generator(settings['private_key'], settings['public_key'], settings['symmetric_key'], settings['symmetric_key_decrypted'], size)
+    if (mode == (True, False, False)):
+        keys_generator(settings['private_key'], settings['public_key'],
+                       settings['symmetric_key'], settings['symmetric_key_decrypted'], size)
         logging.info('Ключи сгенерированы')
 
-
-    elif(mode == (False, True, False)):
+    elif (mode == (False, True, False)):
         encrypt_data(settings['src_text_file'], settings['private_key'],
                      settings['symmetric_key'], settings['encrypted_file'], settings["symmetric_key_decrypted"], size)
         logging.info('Данные зашифрованы')
-    if(mode == (False, False, True)):
+    if (mode == (False, False, True)):
         decrypt_data(settings['encrypted_file'], settings['private_key'],
                      settings['symmetric_key'], settings['decrypted_file'], settings["symmetric_key_decrypted"], size)
         logging.info('Данные расшифрованы')

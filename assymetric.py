@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.serialization import load_pem_public_key, lo
 
 class Assymmetric:
     """Класс Assymmetric для генирации пары асимметричных ключей шифрования"""
+
     def __init__(self, public_k_file: str = None, private_k_file: str = None, decrypted_file: str = None, encrypt_file: str = None) -> None:
         """Запись путей файлов в поля класса
         Args:
@@ -66,7 +67,7 @@ class Assymmetric:
             logging.error(
                 f"Ошибка открытия файла: {self.private_pem}")
 
-    def  encryption_text_to_file(self, c_text: bytes) -> None:
+    def encryption_text_to_file(self, c_text: bytes) -> None:
         """
         десериализация расшифрованного текста в файл
 

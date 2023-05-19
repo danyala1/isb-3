@@ -1,6 +1,7 @@
 from assymetric import Assymmetric
 from symmetric import Symmetric
 
+
 def encrypt_data(decrypted_file: str, private_key: str, symmetric_key: str, encrypted_file: str, symmetric_key_decrypted, size: int) -> None:
     """Шифрование данных
     Args:
@@ -16,5 +17,5 @@ def encrypt_data(decrypted_file: str, private_key: str, symmetric_key: str, encr
     assym_SYM.decryption()
 
     sym = Symmetric(size, symmetric_key_decrypted,
-                               decrypted_file, encrypted_file)
+                    decrypted_file, encrypted_file)
     sym.encryption()

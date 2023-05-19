@@ -1,6 +1,7 @@
 from assymetric import Assymmetric
 from symmetric import Symmetric
 
+
 def keys_generator(private_key: str, public_key: str, symmetric_key: str, symmetric_key_decrypted: str, size: int) -> None:
     """Генерация ключей
 
