@@ -1,5 +1,7 @@
 from assymetric import Assymmetric
 from symmetric import Symmetric
+import logging
+logging.basicConfig(level=logging.INFO)
 
 
 def keys_generator(private_key: str, public_key: str, symmetric_key: str, symmetric_key_decrypted: str, size: int) -> None:
@@ -12,11 +14,15 @@ def keys_generator(private_key: str, public_key: str, symmetric_key: str, symmet
         symmetric_key_decrypted(str): путь к симметричному расшифрованному ключу
         size(int): размер ключа
     """
-    assym = Assymmetric(
-        public_key, private_key, symmetric_key_decrypted, symmetric_key)
-    assym.generate_keys()
+    try:
+        assym = Assymmetric(
+            public_key, private_key, symmetric_key_decrypted, symmetric_key)
+        assym.generate_keys()
 
-    symm = Symmetric(size, symmetric_key_decrypted)
-    symm.generate_key()
+        symm = Symmetric(size, symmetric_key_decrypted)
+        symm.generate_key()
 
-    assym.encryption()
+        assym.encryption()
+        logging.info("Ключт были сгенерированны успешно")
+    except:
+        logging.error("При генерации ключей произошла ошибка")

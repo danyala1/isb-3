@@ -5,7 +5,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.serialization import load_pem_public_key, load_pem_private_key
-
+logging.basicConfig(level=logging.INFO)
 
 class Assymmetric:
     """Класс Assymmetric для генирации пары асимметричных ключей шифрования"""
@@ -26,14 +26,18 @@ class Assymmetric:
 
     def generate_keys(self) -> None:
         """Генерация пары ключей для асимметричного алгоритма шифрования"""
-        keys = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048
-        )
-        private_key = keys
-        public_key = keys.public_key()
-        self.private_key_to_file(private_key)
-        self.public_key_to_file(public_key)
+        try:
+            keys = rsa.generate_private_key(
+                public_exponent=65537,
+                key_size=2048
+            )
+            private_key = keys
+            public_key = keys.public_key()
+            self.private_key_to_file(private_key)
+            self.public_key_to_file(public_key)
+            logging.info("Генерация пары ключей для асимметричного алгоритма шифрования прошла успешно")
+        except:
+            logging.error("Проблемы с генерацией пар ключей асимметричного алгоритма шифрования")
 
     def public_key_to_file(self, public_key: str) -> None:
         """Записываем открытый ключ в файл
@@ -48,6 +52,8 @@ class Assymmetric:
             with open(self.public_pem, 'wb') as public_out:
                 public_out.write(public_key.public_bytes(encoding=serialization.Encoding.PEM,
                                                          format=serialization.PublicFormat.SubjectPublicKeyInfo))
+                logging.info(
+                    f"В файл {self.public_pem} успешно записан публичный ключ")
         except:
             logging.error(
                 f"Ошибка открытия файла: {self.public_pem}")
@@ -63,6 +69,8 @@ class Assymmetric:
                 private_out.write(private_key.private_bytes(encoding=serialization.Encoding.PEM,
                                                             format=serialization.PrivateFormat.TraditionalOpenSSL,
                                                             encryption_algorithm=serialization.NoEncryption()))
+            logging.info(
+                    f"В файл {self.private_pem} успешно записан приватный ключ")   
         except:
             logging.error(
                 f"Ошибка открытия файла: {self.private_pem}")
@@ -78,6 +86,8 @@ class Assymmetric:
         try:
             with open(self.encryption_file, 'wb') as file:
                 file.write(c_text)
+            logging.info(
+                    f"В файл {self.encryption_file} успешно записан расшифрованный текст")  
         except:
             logging.error(
                 f"Ошибка открытия файла: {self.encryption_file}")
@@ -91,6 +101,8 @@ class Assymmetric:
         try:
             with open(self.decrypted_file, 'wb') as file:
                 file.write(data)
+            logging.info(
+                    f"В файл {self.decrypted_file} успешно записан зашифрованный текст")  
         except:
             logging.error(
                 f"Ошибка открытия файла: {self.decrypted_file}")
@@ -105,6 +117,8 @@ class Assymmetric:
             with open(self.public_pem, 'rb') as pem_in:
                 public_bytes = pem_in.read()
             d_public_key = load_pem_public_key(public_bytes)
+            logging.info(
+                    f"Файл {self.public_pem} успешно прочитан")  
             return d_public_key
         except:
             logging.error(
@@ -120,6 +134,8 @@ class Assymmetric:
             with open(self.private_pem, 'rb') as pem_in:
                 private_bytes = pem_in.read()
             d_private_key = load_pem_private_key(private_bytes, password=None,)
+            logging.info(
+                    f"Файл {self.private_pem} успешно прочитан") 
             return d_private_key
         except:
             logging.error(
@@ -133,6 +149,8 @@ class Assymmetric:
         try:
             with open(self.encryption_file, 'rb') as file:
                 c_text = file.read()
+                logging.info(
+                    f"Файл {self.encryption_file} успешно прочитан")
                 return c_text
         except:
             logging.error(
@@ -147,7 +165,7 @@ class Assymmetric:
         try:
             with open(self.decrypted_file, 'rb') as file:
                 data = file.read()
-
+            logging.info(f"Файл {self.decrypted_file} успешно проситан")
             if type(data) != bytes:
                 text = bytes(data, "UTF-8")
             else:
@@ -164,8 +182,12 @@ class Assymmetric:
     def decryption(self) -> None:
         """Дешифрование текста асимметричным алгоритмом
         """
-        private_key = self.__get_private_key()
-        c_text = self.__get_encryption_text()
-        dc_text = private_key.decrypt(c_text, padding.OAEP(mgf=padding.MGF1(
-            algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None))
-        self.decryption_text_to_file(dc_text)
+        try:
+            private_key = self.__get_private_key()
+            c_text = self.__get_encryption_text()
+            dc_text = private_key.decrypt(c_text, padding.OAEP(mgf=padding.MGF1(
+                algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=None))
+            self.decryption_text_to_file(dc_text)
+            logging.info("Дешифрование текста асимметричным алгоритмом прошло успешно")
+        except:
+            logging.error("При расшифровке текста асимметричным алгоритмом завершено с ошибкой")
