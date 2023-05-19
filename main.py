@@ -7,17 +7,13 @@ from encryption import encrypt_data
 from keys_generate import keys_generator
 from decrypt import  decrypt_data
 
-def check_size(size: int):
-    if size == 128 or size == 192 or size == 256:
-        return int(size/8), True
-    return 16, False
-
-
 def get_argument():
+    """Получение аргументов
+    Returns:
+        args: считанные аргументы
+    """
     parser = argparse.ArgumentParser(description="Гибридное шифрование с использованием асимметричного и симметричного ключа")
     mode_group = parser.add_mutually_exclusive_group(required=True)
-    #mode_group.add_argument(
-     #   '-s', '--size', action='store_true', help='Выбрать длинну ключа')
     mode_group.add_argument(
         '-gen', '--generation', action='store_true', help='Сгенерировать ключи')
     mode_group.add_argument(
@@ -29,7 +25,14 @@ def get_argument():
 
 
 def set_config_file(name: str) -> str:
+    """Функция считывает данные с json файла 
 
+    Args:
+        name (str): название json файла
+
+    Returns:
+        str: считанный файл
+    """
     SENTTING = os.path.join(name)
     settings = str()
     try:
